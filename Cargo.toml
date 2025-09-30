@@ -7,5 +7,3 @@ edition = "2024"
 ndarray = "0.16.1"
 num-traits = "0.2.19"
 
-[lib]
-path = "src/modules.rs"
