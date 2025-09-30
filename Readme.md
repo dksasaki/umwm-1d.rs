@@ -14,7 +14,7 @@ You can work with umwm-1d in two ways:
 
 Run the main module directly from the root directory:
 ```bash
-cargo run --no-default-features
+cargo run --release
 ```
 
 Additional compilation options are available for different configurations.
