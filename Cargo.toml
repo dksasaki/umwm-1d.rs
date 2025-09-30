@@ -1,0 +1,11 @@
+[package]
+name = "umwm_1d_rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ndarray = "0.16.1"
+num-traits = "0.2.19"
+
+[lib]
+path = "src/modules.rs"
