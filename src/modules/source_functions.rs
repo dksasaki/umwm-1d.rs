@@ -1,4 +1,4 @@
-use ndarray::prelude::{Array1, Array2, Axis,array};
+use ndarray::prelude::{Array2};
 use crate::modules::utils::*;
 use crate::modules::consts::{PI,GRAV_ACCEL};
 
@@ -35,15 +35,15 @@ pub fn source_dissipation(spectrum_k: &Array2<f64>,
     
     let mut mss = Array2::<f64>::zeros((k.shape()[0], k.shape()[1]));
     if mss_coefficient >0. {
-        mss = mean_squared_slope_long(&spectrum_k, &k, &dk);
+        let mss = mean_squared_slope_long(&spectrum_k, &k, &dk);
     }
     else {
         mss = Array2::<f64>::zeros((k.shape()[0], k.shape()[1]));
     }
     let mss_effect = (1. + mss_coefficient * &mss).mapv(|x| x.powi(2));
 
-    let B_k = saturation_spectrum(&spectrum_k, &k);    
-    dissipation_coefficient * omega * mss_effect * B_k.map(|x| x.powf(dissipation_power))
+    let b_k = saturation_spectrum(&spectrum_k, &k);    
+    dissipation_coefficient * omega * mss_effect * b_k.map(|x| x.powf(dissipation_power))
     
 }
 
@@ -59,18 +59,18 @@ let mss_coefficient: f64 = 120.;
 
 let omega = 2. * PI * frequency;
 let mss_effect = (1. + mss_coefficient*mss).powi(2); 
-let mut Fk = (source_input 
+let mut fk = (source_input 
           /(omega * dissipation_coefficient * mss_effect))
           .mapv(|x| x.powf(1. / dissipation_power))
           / wavenumber.mapv(|x| x.powi(4));
 
-for val in Fk.iter_mut() {
+for val in fk.iter_mut() {
     if val.is_nan() {
         *val = 0.0;
     }
 }
 
-Fk  
+fk  
 }
 
 

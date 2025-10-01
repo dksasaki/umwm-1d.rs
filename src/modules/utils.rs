@@ -1,5 +1,5 @@
-use ndarray::prelude::{Array1, Array2, Array3, Axis};
-use ndarray::{ArrayBase, Data, Dimension, Array, array};
+use ndarray::prelude::{Array1, Array2, Axis};
+use ndarray::{ArrayBase, Data, Dimension, Array};
 use crate::modules::consts::{PI,GRAV_ACCEL};
 use num_traits::Float;
 
@@ -97,11 +97,3 @@ pub fn mean_squared_slope_long(spectrum_k: &Array2<f64>, k: &Array2<f64>, dk: &A
     weighted_cumsum(&spectrum_k, &k, &dk)
 }
                       
-                   
-pub fn spectral_field(nx: usize, om: usize) -> Array2<f64> {
-    Array2::<f64>::zeros((nx, om))
-}
-
-pub fn spectral_field3d(nx: usize, pm: usize, om: usize) -> Array3<f64> {
-    Array3::<f64>::zeros((nx, pm, om))
-}
