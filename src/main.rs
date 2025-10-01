@@ -7,6 +7,7 @@ use crate::modules::utils::ArrayExtend;
 use crate::modules::utils as ut;
 use crate::modules::physics as phy;
 use crate::modules::diagnostics as diag;
+use crate::modules::consts::{PI, grav_accel};
 use std::time::Instant;
 
 
@@ -15,13 +16,12 @@ fn main() {
     let fmax: f64 = 20.0;
     let fmin: f64 = 0.1;
     let om: usize = 50;
-    let pi  = std::f64::consts::PI;
+    let pi  = PI; //std::f64::consts::PI;
     
     let nx  : usize = 11;
     let istart : usize = 0;
     let iend   : usize = nx;
 
-    let grav_accel: f64 = 9.8;
     let surface_tension: f64 = 0.074;
     let water_density: f64 = 1e3;
     let water_depth: f64 = 1e3;
@@ -40,9 +40,9 @@ fn main() {
             }
     }
     
-    let k = init::wavenumber(istart, iend, om, &f, 32., grav_accel, surface_tension, water_density);
+    let k = init::wavenumber(istart, iend, om, &f, 32., surface_tension, water_density);
     let cp = ut::phase_speed( &f, &k);
-    let cg = ut::group_speed(surface_tension, &f, &k, &depth, grav_accel, water_density);
+    let cg = ut::group_speed(surface_tension, &f, &k, &depth, water_density);
     let dk = 2.*pi* &f/&cg;
     
     

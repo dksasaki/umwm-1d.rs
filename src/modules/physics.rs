@@ -2,7 +2,7 @@ use ndarray::prelude::{Array1, Array2};
 use crate::modules::source_functions::*;
 use crate::modules::utils::ArrayExtend;
 use crate::modules::diagnostics as diag;
-
+use crate::modules::consts::{PI,grav_accel};
 
 pub fn advect(istart: usize,
           iend  : usize,
@@ -45,9 +45,9 @@ pub fn integrate(
     let num_time_steps:usize = (duration/output_interval) as usize;
     let num_grid_points = k.shape()[0];
     let exp_growth_factor: f64 = 0.1;
-    let pi  = std::f64::consts::PI;
+    // let pi  = std::f64::consts::PI;
 
-    let dk = 2. * pi * f/cg;
+    let dk = 2. * PI * f/cg;
     
     let mut Fk = Fk_init.clone();
     let mut swh = Array2::<f64>::zeros((num_time_steps, iend));

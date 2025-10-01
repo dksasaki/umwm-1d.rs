@@ -1,5 +1,6 @@
 use ndarray::prelude::{Array1, Array2};
 use crate::modules::utils::spectral_field;
+use crate::modules::consts::{PI,grav_accel};
 
 
 pub fn set_frequency(fmin: f64, fmax: f64, om: usize) -> (Array1<f64>, f64) {
@@ -17,7 +18,6 @@ pub fn wavenumber(istart: usize,
     om    : usize,
     frequency: &Array2<f64>,
     water_depth: f64,
-    grav_accel: f64,
     surface_tension: f64,
     water_density: f64) -> Array2<f64> {
     
@@ -57,13 +57,13 @@ pub fn wavenumber(istart: usize,
 }
 
 
-pub fn set_ustar_initial(wspd: & Array1::<f32>,
+pub fn set_ustar_initial(wspd: & Array1::<f64>,
                         istart: usize,
-                        iend:   usize) -> Array1::<f32>{
+                        iend:   usize) -> Array1::<f64>{
 
     let nx = iend - istart;
-    let mut cd    = Array1::<f32>::ones(nx) * 1.2e-3;
-    let mut ustar = Array1::<f32>::zeros(nx);
+    let mut cd    = Array1::<f64>::ones(nx) * 1.2e-3;
+    let mut ustar = Array1::<f64>::zeros(nx);
 
     for i in istart..iend{
         if wspd[i] > 11. {
@@ -83,27 +83,27 @@ pub fn compute_velocities_and_adimensional_depth(
     istart: usize,
     iend  : usize,
     nghost: usize,
-    sfct  : f32,
-    rhow: f32,
-    f: &Array1<f32>,
-    k: &Array2<f32>,
-    depth: &Array1<f32>,
-    ) -> (Array2<f32>, Array2<f32>, Array2<f32>){
+    sfct  : f64,
+    rhow: f64,
+    f: &Array1<f64>,
+    k: &Array2<f64>,
+    depth: &Array1<f64>,
+    ) -> (Array2<f64>, Array2<f64>, Array2<f64>){
     
     let nx = iend - istart + 2 * nghost;
     let mut cp0 = spectral_field(nx,om);
     let mut cg0 = spectral_field(nx,om);
     let mut kd = spectral_field(nx,om);
-    let g: f32 = 9.8;
+    let g: f64 = 9.8;
 
-    let twopi  = std::f32::consts::PI*2.0;
+    let twopi  = std::f64::consts::PI*2.0;
 
     for i in istart-1..iend+1 {
         for o in 0..om {
             kd[[i,o]]  = k[[i,o]] * depth[i];
             cp0[[i,o]] = twopi * f[o] / k[[i,o]];
             cg0[[i,o]] = cp0[[i,o]]*(0.5+k[[i,o]]*depth[i]/(2.*kd[[i,o]]).sinh()
-                                    +sfct*k[[i,o]]*k[[i,o]]/(rhow*g+sfct*k[[i,o]]*k[[i,o]]));
+                                    +sfct*k[[i,o]]*k[[i,o]]/(rhow*grav_accel+sfct*k[[i,o]]*k[[i,o]]));
         }
     }
     return (kd, cp0, cg0)
