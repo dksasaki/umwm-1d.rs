@@ -2,7 +2,7 @@ use ndarray::prelude::{Array1, Array2};
 use crate::modules::source_functions::*;
 use crate::modules::utils::ArrayExtend;
 use crate::modules::diagnostics as diag;
-use crate::modules::consts::{PI,grav_accel};
+use crate::modules::consts::{PI,GRAV_ACCEL};
 
 pub fn advect(istart: usize,
           iend  : usize,

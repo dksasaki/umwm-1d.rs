@@ -7,7 +7,7 @@ use crate::modules::utils::ArrayExtend;
 use crate::modules::utils as ut;
 use crate::modules::physics as phy;
 use crate::modules::diagnostics as diag;
-use crate::modules::consts::{PI, grav_accel};
+use crate::modules::consts::{PI, GRAV_ACCEL};
 use std::time::Instant;
 
 
@@ -32,6 +32,9 @@ fn main() {
 
     let mut f = ndarray::Array2::<f64>::zeros((nx,om));
     let mut x = ndarray::Array2::<f64>::zeros((nx,om));
+
+    pub const dt_panic: f32 = 1e-4;
+
     
     for i in 0..nx{
         for o in 0..om{

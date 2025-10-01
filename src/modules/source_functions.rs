@@ -1,6 +1,6 @@
 use ndarray::prelude::{Array1, Array2, Axis,array};
 use crate::modules::utils::*;
-use crate::modules::consts::{PI,grav_accel};
+use crate::modules::consts::{PI,GRAV_ACCEL};
 
 pub fn source_input(
     wind_speed: f64,
@@ -18,7 +18,7 @@ pub fn source_input(
     let wind_speed_relative = wind_speed - phase_speed - current;
     let mut s_in = sheltering_coefficient * &wind_speed_relative * &wind_speed_relative.abs_val()
                    * frequency * wavenumber ;
-    s_in = s_in * air_density / water_density / grav_accel * 2. * PI ;
+    s_in = s_in * air_density / water_density / GRAV_ACCEL * 2. * PI ;
     s_in
 }
 

@@ -1,6 +1,6 @@
 use ndarray::prelude::{Array1, Array2, Array3, Axis};
 use ndarray::{ArrayBase, Data, Dimension, Array, array};
-use crate::modules::consts::{PI,grav_accel};
+use crate::modules::consts::{PI,GRAV_ACCEL};
 use num_traits::Float;
 
 pub trait ArrayExtend<T,D> {
@@ -80,7 +80,7 @@ water_density: f64) -> Array2<f64> {
     let cp = phase_speed(&frequency, &wavenumber);
     let kd = wavenumber * water_depth;
     let sigma_k2 = surface_tension * wavenumber.mapv(|x| x.powi(2));
-    cp * (0.5 + &kd / &kd.mapv(|x| x.sinh()) + &sigma_k2/ (water_density * grav_accel * &sigma_k2))
+    cp * (0.5 + &kd / &kd.mapv(|x| x.sinh()) + &sigma_k2/ (water_density * GRAV_ACCEL * &sigma_k2))
     
 }
 

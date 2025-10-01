@@ -1,6 +1,6 @@
 use ndarray::prelude::{Array1, Array2};
 use crate::modules::utils::spectral_field;
-use crate::modules::consts::{PI,grav_accel};
+use crate::modules::consts::{PI,GRAV_ACCEL};
 
 
 pub fn set_frequency(fmin: f64, fmax: f64, om: usize) -> (Array1<f64>, f64) {
@@ -24,9 +24,9 @@ pub fn wavenumber(istart: usize,
     let pi  = std::f64::consts::PI;
     
     
-    let frequency_nondim = 2. * pi * frequency * (water_depth/grav_accel).sqrt();
+    let frequency_nondim = 2. * pi * frequency * (water_depth/GRAV_ACCEL).sqrt();
     let mut k: Array2<f64> = frequency_nondim.mapv(|x| x.powi(2));
-    let surface_tension_nondim = surface_tension / (grav_accel * water_density * water_depth.powi(2));
+    let surface_tension_nondim = surface_tension / (GRAV_ACCEL * water_density * water_depth.powi(2));
 
     for i in istart..iend{
         for o in 0..om{
@@ -103,7 +103,7 @@ pub fn compute_velocities_and_adimensional_depth(
             kd[[i,o]]  = k[[i,o]] * depth[i];
             cp0[[i,o]] = twopi * f[o] / k[[i,o]];
             cg0[[i,o]] = cp0[[i,o]]*(0.5+k[[i,o]]*depth[i]/(2.*kd[[i,o]]).sinh()
-                                    +sfct*k[[i,o]]*k[[i,o]]/(rhow*grav_accel+sfct*k[[i,o]]*k[[i,o]]));
+                                    +sfct*k[[i,o]]*k[[i,o]]/(rhow*GRAV_ACCEL+sfct*k[[i,o]]*k[[i,o]]));
         }
     }
     return (kd, cp0, cg0)
