@@ -16,6 +16,7 @@ where
     D: Dimension,
     T: Float+ Copy //+ num_traits::Signed,
 {
+    #[allow(unused)]
     fn min_val(&self) -> T {
         self.iter()
             .copied()
@@ -84,7 +85,6 @@ water_density: f64) -> Array2<f64> {
     
 }
 
-                   
 pub fn mean_squared_slope(spectrum_k: &Array2<f64>, k: &Array2<f64>, dk: &Array2<f64>) -> Array1<f64> {
     weighted_sum_2d(&spectrum_k, &k, &dk)
 }

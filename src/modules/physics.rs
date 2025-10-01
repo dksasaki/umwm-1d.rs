@@ -24,7 +24,6 @@ pub fn advect(istart: usize,
 
 
 
-
 pub fn integrate(
     istart: usize,
     iend:   usize,
@@ -49,18 +48,22 @@ pub fn integrate(
     
     let mut fk = fk_init.clone();
     let mut swh = Array2::<f64>::zeros((num_time_steps, iend));
-    
+    let mut sin = Array2::<f64>::zeros((om, iend));
+    let mut sds = Array2::<f64>::zeros((om, iend));
+    let mut snl = Array2::<f64>::zeros((om, iend));
+    let mut aux = Array2::<f64>::zeros((om, iend));
+
     // let mut count: usize = 0;
     for count in 0..num_time_steps {
         let mut elapsed: f64 = 0.;
 
         // while count < 4 {
         while elapsed < output_interval {
-            let sin = source_input(wspd, &f, &k, &cp);
-            let sds = source_dissipation(&fk, &f, &k, &dk);
-            let snl = source_wave_interaction(istart, iend, om, &fk, &k, &dk);
+            sin = source_input(wspd, &f, &k, &cp);
+            sds = source_dissipation(&fk, &f, &k, &dk);
+            snl = source_wave_interaction(istart, iend, om, &fk, &k, &dk);
             
-            let aux = &sin -&sds;
+            aux = &sin -&sds;
             
             
             let dt = (exp_growth_factor / &aux.abs_val().max_val())
@@ -70,6 +73,7 @@ pub fn integrate(
             swh.row_mut(count).assign(&diag::significant_wave_height(&fk, &dk));
             
             elapsed += dt;
+
         }
         // count += 1;
     }
